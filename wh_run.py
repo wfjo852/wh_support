@@ -8,7 +8,7 @@ import wh2api
 # user_id = input('User ID : ')
 # user_pw = getpass.getpass()
 
-wh_url = "http://192.168.0.15"
+wh_url = "http://localhost"
 user_id ="c2m"
 user_pw ="c2m"
 

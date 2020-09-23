@@ -4,19 +4,24 @@ from wh2_script import wh_ffmpeg
 # Setting
 movie_ext =['.mp4','.mov']
 export_ext ='.mp4'
-subprocess_path = r".\exec"
-font_path = r".\exec"
+subprocess_path = "./exec"
+font_path = "./exec"
 
 
 class FFMPEG_RUN:
     def __init__(self,file_path):
         self.file_path = file_path
+        self.ffmpeg = wh_ffmpeg.Wh_ffmpeg(self.file_path,subprocess_path,font_path)
 
     def media_length(self,file_name):
-        ffmpeg = wh_ffmpeg.Wh_ffmpeg(self.file_path,subprocess_path,font_path)
-        ffprobe = ffmpeg.ffprobe_file(file_name=file_name)
+        ffprobe = self.ffmpeg.ffprobe_file(file_name=file_name)
         length=ffprobe['streams'][0]['nb_frames']
         return {"length": length}
+
+    def make_thumbnail(self,file_path_list):
+
+        output_file_path = self.ffmpeg.make_thumbnail(file_path_list,image_size="720*480")
+
 
 
 

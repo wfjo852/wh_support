@@ -29,7 +29,7 @@ class Wh_ffmpeg:
                        input_file]
         ffprobe_cmd = " ".join(ffprobe_cmd)
         # print(ffprobe_cmd)
-        result = subprocess.check_output(ffprobe_cmd).decode("utf-8")
+        result = subprocess.check_output(ffprobe_cmd,shell=True).decode("utf-8")
         self.result_json = json.loads(result)
         return self.result_json
 
@@ -69,7 +69,7 @@ class Wh_ffmpeg:
                              '-vf',f'pad=ceil(iw/2)*2:ceil(ih/2)*2',
                              output_file]
             file_conv_cmd = ' '.join(file_conv_cmd)
-            subprocess.call(file_conv_cmd)
+            subprocess.call(file_conv_cmd,shell=True)
 
     def draw_text(self,
                   text,
@@ -119,7 +119,7 @@ class Wh_ffmpeg:
         else:
             os.mkdir(self.output_tmp_folder)
 
-        subprocess.call(make_text_movie_cmd)
+        subprocess.call(make_text_movie_cmd,shell=True)
         return output_file_path
 
 
@@ -145,7 +145,7 @@ class Wh_ffmpeg:
         else:
             os.mkdir(self.output_folder)
 
-        subprocess.call(merge_movie_cmd)
+        subprocess.call(merge_movie_cmd,shell=True)
         return self.output_folder
 
     def make_concat_file(self,file=[]):
@@ -180,6 +180,8 @@ class Wh_ffmpeg:
                                   '-s',image_size,
                                   '-vf', '"pad=ceil(iw/2)*2:ceil(ih/2)*2"',
                                   self.thumbnail_folder]
+            print(make_thumbnail_cmd)
+
             make_thumbnail_cmd = " ".join(make_thumbnail_cmd)
 
             # 썸네일 폴더 만들기
@@ -188,6 +190,5 @@ class Wh_ffmpeg:
             else:
                 os.mkdir(self.thumbnail_folder)
 
-            
-            subprocess.call(make_thumbnail_cmd)
+            subprocess.call(make_thumbnail_cmd,shell=True)
             return self.output_folder
