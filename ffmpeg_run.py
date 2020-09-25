@@ -18,9 +18,10 @@ class FFMPEG_RUN:
         length=ffprobe['streams'][0]['nb_frames']
         return {"length": length}
 
-    def make_thumbnail(self,file_path_list):
+    def make_thumbnail(self,file_path_list=[]):
 
-        output_file_path = self.ffmpeg.make_thumbnail(file_path_list,image_size="720*480")
+        output_folder_path = self.ffmpeg.make_thumbnail(file_path_list,image_size="720x480",cut_time="0.01")
+        return output_folder_path
 
 
 

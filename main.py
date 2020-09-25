@@ -40,5 +40,8 @@ for file in file_list['result']:
     length = ffmpeg.media_length(file_name)
     file.update(length)
 print("Done")
-print(file_list)
 
+print("썸네일 추출중 입니다")
+for file in file_list['result']:
+    thumbnail_file_name = {"thumbnail":os.path.splitext(file['file'])[0]+'.jpg'}
+    file.update(thumbnail_file_name)

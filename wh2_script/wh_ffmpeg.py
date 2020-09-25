@@ -164,25 +164,26 @@ class Wh_ffmpeg:
         os.remove(self.concat_file_path)
         shutil.rmtree(self.output_tmp_folder,ignore_errors=True )
 
-    def make_thumbnail(self,file_path_list=[],image_size="1280*720"):
+    def make_thumbnail(self,file_path_list=[],image_size="1280*720",cut_time='00:00:00:01'):
 
 
         for file_path in file_path_list:
-
+            export_file_name = os.path.splitext(os.path.basename(file_path))[0]+'.jpg'
             make_thumbnail_cmd = [self.ffmpeg_path,
                                   '-i', file_path,
                                   '-an',
-                                  '-ss','00:00:00:01',
+                                  '-ss',cut_time,
                                   '-an',
                                   '-r','2',
                                   '-vframes','1',
                                   '-y',
                                   '-s',image_size,
                                   '-vf', '"pad=ceil(iw/2)*2:ceil(ih/2)*2"',
-                                  self.thumbnail_folder]
+                                  self.thumbnail_folder +"/"+ export_file_name]
             print(make_thumbnail_cmd)
 
             make_thumbnail_cmd = " ".join(make_thumbnail_cmd)
+            print(make_thumbnail_cmd)
 
             # 썸네일 폴더 만들기
             if os.path.isdir(self.thumbnail_folder):
@@ -191,4 +192,4 @@ class Wh_ffmpeg:
                 os.mkdir(self.thumbnail_folder)
 
             subprocess.call(make_thumbnail_cmd,shell=True)
-            return self.output_folder
+            return self.thumbnail_folder
