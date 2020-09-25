@@ -39,9 +39,18 @@ for file in file_list['result']:
     file_name = file['file']
     length = ffmpeg.media_length(file_name)
     file.update(length)
-print("Done")
+print("메타데이터 추출 완료")
 
+###
 print("썸네일 추출중 입니다")
 for file in file_list['result']:
     thumbnail_file_name = {"thumbnail":os.path.splitext(file['file'])[0]+'.jpg'}
     file.update(thumbnail_file_name)
+
+thumbnail_conv_file_list = []
+for file in file_list['result']:
+    file_full_path = [path,file["file"]]
+    thumbnail_conv_file_list.append(("/").join(file_full_path))
+
+thumbnail_output_folder = ffmpeg.make_thumbnail(thumbnail_conv_file_list)
+print("썸네일 추출 완료")

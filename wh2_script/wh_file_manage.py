@@ -51,7 +51,7 @@ class File:
 
         # 딕셔너리 형태로 출력
         # return {"result":result,"check":create_check_result,"check_result":[]}
-        return {"result":result,'path':file_path,"file_list":file_list}
+        return {"result":result}
 
     #문자 조합.
     def join_name(self,file_split,join_idx):

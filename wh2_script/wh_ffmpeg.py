@@ -180,10 +180,8 @@ class Wh_ffmpeg:
                                   '-s',image_size,
                                   '-vf', '"pad=ceil(iw/2)*2:ceil(ih/2)*2"',
                                   self.thumbnail_folder +"/"+ export_file_name]
-            print(make_thumbnail_cmd)
 
             make_thumbnail_cmd = " ".join(make_thumbnail_cmd)
-            print(make_thumbnail_cmd)
 
             # 썸네일 폴더 만들기
             if os.path.isdir(self.thumbnail_folder):
@@ -192,4 +190,6 @@ class Wh_ffmpeg:
                 os.mkdir(self.thumbnail_folder)
 
             subprocess.call(make_thumbnail_cmd,shell=True)
-            return self.thumbnail_folder
+            print(export_file_name,' 출력 완료')
+
+        return self.thumbnail_folder
