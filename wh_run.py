@@ -100,7 +100,9 @@ def compared_list(project_idx,episode_idx,file_list):
 
 
 
-#파일 유무 확인
+
+
+#login Info파일 유무 및 유효성 검사
 try:
     login_json_read = open("./setting/login.json", 'r', encoding="utf-8")
     login_info = json.load(login_json_read)
