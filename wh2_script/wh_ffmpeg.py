@@ -164,7 +164,7 @@ class Wh_ffmpeg:
         os.remove(self.concat_file_path)
         shutil.rmtree(self.output_tmp_folder,ignore_errors=True )
 
-    def make_thumbnail(self,file_path_list=[],image_size="1280*720",cut_time='00:00:00:01'):
+    def make_thumbnail(self,file_path_list=[],image_size="1280*720",cut_time='00:00:00:01',overwrite="y"):
 
 
         for file_path in file_path_list:
@@ -174,7 +174,7 @@ class Wh_ffmpeg:
                                   '-an',
                                   '-ss',cut_time,
                                   '-an',
-                                  '-r','2',
+                                  f'-{overwrite}','2',
                                   '-vframes','1',
                                   '-y',
                                   '-s',image_size,

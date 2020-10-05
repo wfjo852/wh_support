@@ -3,7 +3,7 @@
 import os,sys
 from datetime import datetime
 
-from wh2_script import wh_file_manage
+from wh2_script import wh_file_manage,wh_excle
 import wh_run,ffmpeg_run
 
 
@@ -89,13 +89,14 @@ for file in new_file_list:
 
 
 
+#벌크 업로드 여부 확인
 bulk_run = ""
 
 while bulk_run != "y" and bulk_run !='n':
-    bulk_run = input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까? \n 'yes' or 'no'" % (len(new_file_list)))
+    bulk_run = input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'" % (len(new_file_list)))
 
 
-
+#벌크 업로드 실행
 if bulk_run == "y":
     wh_run.wh2api.shot.bulk_create(project_idx=project_idx,
                                    episode_idx=episode_idx,
@@ -108,3 +109,33 @@ if bulk_run == "y":
                                    original_edit_path=original_edit_path)
 elif bulk_run == 'n':
     print("사용자에 의해 프로세스가 중지 되었습니다.")
+    sys.exit(1)
+
+
+
+
+#엑셀 출력 여부 확인
+excle_write =""
+
+while excle_write != "y" and excle_write != "n":
+    excle_write = input("Bulk Create한 샷 목록을 엑셀로 출력 하시겠습니까? \n 'y' or 'n'")
+
+#엑셀로 출력
+if excle_write =='y':
+    columns_header = ["project",'episode',"sequence","shot","length","file","thumbnail"]
+    workbook =  wh_excle.Create_workbook("Created_shot_list")
+    workbook.input_line(columns_header)
+    for file in new_file_list:
+        workbook.input_line([file['project'],
+                             file['episode'],
+                             file['sequence'],
+                             file['shot'],
+                             file['length'],
+                             path+"/"+file['file'],
+                             path+"/"+file['thumbnail']])
+
+    workbook.save_file(path+"Created_list.xlsx")
+    print('엑셀 파일로 저장 되었습니다. \n',path+"Created_list.xlsx")
+else:
+    print("사용자에 의해 프로세스가 중지 되었습니다.")
+    sys.exit(1)

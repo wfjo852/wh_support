@@ -20,7 +20,9 @@ class FFMPEG_RUN:
 
     def make_thumbnail(self,file_path_list=[]):
 
-        output_folder_path = self.ffmpeg.make_thumbnail(file_path_list,image_size="640x360",cut_time="0.01")
+        output_folder_path = self.ffmpeg.make_thumbnail(file_path_list,image_size="640x360",
+                                                        cut_time="0.01",
+                                                        overwrite="n")
         return output_folder_path
 
 
