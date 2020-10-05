@@ -9,26 +9,28 @@ import wh_run,ffmpeg_run
 
 #Path Setting
 #path = sys.argv[2]
-# path = r"H:\Park_doc\wormhole\Test_shot_BigBuck\export\test"
-path = "/Users/jonghopark/Desktop/Wormhole2/BIgbuck_bunny/Anim_Data_burnin"
+path = r"H:\Park_doc\wormhole\Test_shot_BigBuck\export\test"
+# path = "/Users/jonghopark/Desktop/Wormhole2/BIgbuck_bunny/Anim_Data_burnin"
+
+
+#파일의 포맷을 기록 하는 기능
+file_format_class = wh_file_manage.File_format("_",os.listdir(path)[0])
+file_format = file_format_class.run()
+print(file_format)
+
 #업로드할 프로젝트 에피소드 선택
 project_idx, project_name= wh_run.project_select()
 episode_idx, episode_name = wh_run.episode_select(project_idx=project_idx)
 
-#FFmpeg 세팅
-ffmpeg = ffmpeg_run.FFMPEG_RUN(path)
-
-
+#파일 포맷 및 기본 정보 입력
 Wh_file = wh_file_manage.File(split_text = "_",
                               project= project_name,
                               episode= episode_name,
-                              sequence= [1],
-                              shot= [1, 2],
+                              sequence= file_format['sequence'],
+                              shot= file_format['shot'],
                               task="")
-
-#big_s0010_c002220_animation_v001.mov
-# 0 _  1  _   2   _     3  _   4
-#Splite Text나눈 단위를 다시 Splite Text로 합쳐서 붙힘.
+#FFmpeg 세팅
+ffmpeg = ffmpeg_run.FFMPEG_RUN(path)
 
 
 #Path내 파일 체크.
@@ -49,6 +51,7 @@ for file in new_file_list:
     length = ffmpeg.media_length(file_name)
     file.update(length)
 print("메타데이터 추출 완료")
+print(new_file_list)
 
 ###
 print("썸네일 추출중 입니다")
@@ -134,8 +137,8 @@ if excle_write =='y':
                              path+"/"+file['file'],
                              path+"/"+file['thumbnail']])
 
-    workbook.save_file(path+"Created_list.xlsx")
-    print('엑셀 파일로 저장 되었습니다. \n',path+"Created_list.xlsx")
+    workbook.save_file(path + "_Created_list.xlsx")
+    print('엑셀 파일로 저장 되었습니다. \n',path+"_Created_list.xlsx")
 else:
     print("사용자에 의해 프로세스가 중지 되었습니다.")
     sys.exit(1)

@@ -10,9 +10,10 @@ class File:
                  episode=list or str,
                  sequence=list or str,
                  shot=list or str,
-                 task=list or str):
+                 task=list or str,
+                 ext = ['.mov','.mp4']):
 
-
+        self.ext = ext
         self.split_text = split_text
         self.project = project
         self.episode = episode
@@ -22,7 +23,10 @@ class File:
 
     def file_dict(self,file_path):
         #파일 리스트 조회
-        file_list = os.listdir(file_path)
+        file_list = []
+        for file in os.listdir(file_path):
+            if os.path.splitext(file)[1] in self.ext:
+                file_list.append(file)
 
         #기본 변수 세팅
         result =[]
@@ -61,7 +65,6 @@ class File:
 
     #문자 조합.
     def join_name(self,file_split,join_idx):
-
         result = []
 
         if join_idx != [] and type(join_idx) != str : #입력값이 리스트가 비어있지 않고,스트링이 아닌경우
@@ -72,34 +75,90 @@ class File:
         else:
             return ""
 
-        return (self.split_text).join(result)
+        # result 리스트안에 값이 1개인 경우
+        if len(result) ==1:
+            return result[0]
+        else:
+            return (self.split_text).join(result)
 
 
 
 
 #파일 포맷 물어보기
 
-def file_format(split_text,sample_file_name):
-    print(sample_file_name,"를",f"'{split_text}'","로 구분했습니다.")
-    file_name = os.path.splitext(sample_file_name)[0]  # 확장자 제거
-    file_split = file_name.split(split_text)  # split 기호로 나누기
-    idx = 0
-    for text in file_split:
-        print(idx,":",text)
-        idx = idx +1
-    sequence = input("이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n ex) 1 or 2,3")
-    shot = input("이중 샷에 해당하는 것을 순서대로 선택 하세요\n ex) 2 or 2,3")
+class File_format:
+    def __init__(self,split_text,sample_file_name):
 
-    return sequence,shot
+        self.split_text = split_text
+        self.sample_file_name = sample_file_name
+        self.file_name = os.path.splitext(sample_file_name)[0]  # 확장자 제거
+        self.file_split = self.file_name.split(split_text)  # split 기호로 나누기
+        self.file_format_info=""
 
-try:
-    file_format_read = open("./setting/file_format.json","r",encoding="utf-8")
-    file_format_info = json.load(file_format_read)
+    def make_json(self):
+        print(self.sample_file_name,"를",f"'{self.split_text}'","로 구분했습니다.")
+        idx = 0
+        for text in self.file_split:
+            print(idx,":",text)
+            idx = idx +1
+        sequence = input(f"이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
+        shot = input(f"이중 샷에 해당하는 것을 순서대로 선택 하세요\n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
+        file_format_write = open("./setting/file_format.json","w",encoding="utf-8")
 
-    if file_format_info["sequence"] !="" and file_format_info["shot"] !="":
+        file_format_info = {"sequence":sequence.split(self.split_text),"shot":shot.split(self.split_text)}
+        json.dump(file_format_info,file_format_write)
+        file_format_write.close()
+        return self.run()
 
-    else:
-        print("정보가 비어있습니다. 다시 시도합니다.")
+    def join_name(self,join_idx):
 
-except:
-    print("파일 포맷 기록이 없습니다.")
+        result = []
+
+        if join_idx != [] and type(join_idx) != str : #입력값이 리스트가 비어있지 않고,스트링이 아닌경우
+            for idx in join_idx:
+                result.append(self.file_split[int(idx)])
+        elif type(join_idx) == str : #입력값이 문자일경우
+            return join_idx
+        else:
+            return ""
+
+        if len(result) ==1:
+            return result[0]
+        else:
+            return (self.split_text).join(result)
+
+    def run(self):
+        try:
+            file_format_read = open("./setting/file_format.json","r",encoding="utf-8")
+            file_format_info = json.load(file_format_read)
+
+
+            if file_format_info["sequence"] !="" and file_format_info["shot"] !="":
+                sequence = self.join_name(file_format_info['sequence'])
+                shot = self.join_name(file_format_info['shot'])
+                print("sequence name : ",sequence,"\nshot name :",shot)
+
+            else:
+                print("정보가 비어있습니다. 다시 시작해 주세요.")
+                self.make_json()
+
+
+            #리셋 여부 확인
+            reset = ""
+            while reset != 'y' and reset != 'n':
+                reset = input("해당데이터로 진행 하시겠습니까?('y'or'n')")
+
+            if reset =="y":
+
+                return file_format_info
+
+            elif reset == "n":
+                return self.make_json()
+            else:
+                print("error")
+
+        except:
+            print("파일 포맷 기록이 없습니다.")
+            self.make_json()
+
+

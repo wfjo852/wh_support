@@ -27,7 +27,10 @@ class Create_workbook:
 
 
     def save_file(self,excle_path):
-        self.write_wb.save(excle_path)
+        try:
+            self.write_wb.save(excle_path)
+        except:
+            print("파일 저장에 실패 했습니다.")
         # write_wb.save('/Users/Jamong/Desktop/숫자.xlsx')
 
 # # Sheet1에다 입력

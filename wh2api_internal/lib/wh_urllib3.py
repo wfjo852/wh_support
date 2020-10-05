@@ -14,7 +14,7 @@ def get_requests(api,data="",observed_user_idx=""):
 
     #데이터 처리
     getdata = urllib3.request.urlencode(data)
-    print(getdata)
+    # print(getdata)
 
     #토큰 처리
     wh_token = header_setting(wh.Login.whtoken)
