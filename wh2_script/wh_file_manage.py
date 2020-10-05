@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
 
 
 class File:
@@ -72,3 +73,33 @@ class File:
             return ""
 
         return (self.split_text).join(result)
+
+
+
+
+#파일 포맷 물어보기
+
+def file_format(split_text,sample_file_name):
+    print(sample_file_name,"를",f"'{split_text}'","로 구분했습니다.")
+    file_name = os.path.splitext(sample_file_name)[0]  # 확장자 제거
+    file_split = file_name.split(split_text)  # split 기호로 나누기
+    idx = 0
+    for text in file_split:
+        print(idx,":",text)
+        idx = idx +1
+    sequence = input("이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n ex) 1 or 2,3")
+    shot = input("이중 샷에 해당하는 것을 순서대로 선택 하세요\n ex) 2 or 2,3")
+
+    return sequence,shot
+
+try:
+    file_format_read = open("./setting/file_format.json","r",encoding="utf-8")
+    file_format_info = json.load(file_format_read)
+
+    if file_format_info["sequence"] !="" and file_format_info["shot"] !="":
+
+    else:
+        print("정보가 비어있습니다. 다시 시도합니다.")
+
+except:
+    print("파일 포맷 기록이 없습니다.")

@@ -21,7 +21,7 @@ def wh_login():
 
     wh_login = wh.Login(wh_url = wh_url, user_id=user_id, user_pw=user_pw)
     wh_token = wh_login.whtoken['whtoken']
-    login_json_write = open("setting/login.json", 'w', encoding="utf-8")
+    login_json_write = open("./setting/login.json", 'w', encoding="utf-8")
     login_json_file = {"wh_url": wh_url, "user_id": user_id, "wh_token": wh_token}
     json.dump(login_json_file,login_json_write)
     login_json_write.close()
@@ -106,7 +106,6 @@ def compared_list(project_idx,episode_idx,file_list):
 try:
     login_json_read = open("./setting/login.json", 'r', encoding="utf-8")
     login_info = json.load(login_json_read)
-    print('load done')
 
     if login_info['wh_token'] != "" and login_info['wh_url'] != "" and login_info['user_id'] != "":
         wh_url = login_info['wh_url']
