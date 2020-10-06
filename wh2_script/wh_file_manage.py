@@ -2,6 +2,7 @@
 
 import os
 import json
+from wh2_script import global_setting
 
 
 class File:
@@ -11,7 +12,7 @@ class File:
                  sequence=list or str,
                  shot=list or str,
                  task=list or str,
-                 ext = ['.mov','.mp4']):
+                 ext = global_setting.import_ext):
 
         self.ext = ext
         self.split_text = split_text
@@ -96,14 +97,14 @@ class File_format:
         self.file_format_info=""
 
     def make_json(self):
-        print(self.sample_file_name,"를",f"'{self.split_text}'","로 구분했습니다.")
+        print("\n",self.sample_file_name,"를",f"'{self.split_text}'","로 구분했습니다.")
         idx = 0
         for text in self.file_split:
             print(idx,":",text)
             idx = idx +1
-        sequence = input(f"이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
-        shot = input(f"이중 샷에 해당하는 것을 순서대로 선택 하세요\n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
-        file_format_write = open("./setting/file_format.json","w",encoding="utf-8")
+        sequence = input(f"\n이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
+        shot = input(f"\n이중 샷에 해당하는 것을 순서대로 선택 하세요\n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
+        file_format_write = open(global_setting.file_format_path + "/file_format.json", "w", encoding="utf-8")
 
         file_format_info = {"sequence":sequence.split(self.split_text),"shot":shot.split(self.split_text)}
         json.dump(file_format_info,file_format_write)
@@ -129,24 +130,24 @@ class File_format:
 
     def run(self):
         try:
-            file_format_read = open("./setting/file_format.json","r",encoding="utf-8")
+            file_format_read = open(global_setting.file_format_path + "/file_format.json", "r", encoding="utf-8")
             file_format_info = json.load(file_format_read)
 
 
             if file_format_info["sequence"] !="" and file_format_info["shot"] !="":
                 sequence = self.join_name(file_format_info['sequence'])
                 shot = self.join_name(file_format_info['shot'])
-                print("sequence name : ",sequence,"\nshot name :",shot)
+                print("\n",self.sample_file_name,"\nsequence name : ",sequence,"\nshot name :",shot)
 
             else:
-                print("정보가 비어있습니다. 다시 시작해 주세요.")
+                print("\n정보가 비어있습니다. 다시 시작해 주세요.")
                 self.make_json()
 
 
             #리셋 여부 확인
             reset = ""
             while reset != 'y' and reset != 'n':
-                reset = input("해당데이터로 진행 하시겠습니까?('y'or'n')")
+                reset = input("해당 네이밍 규칙으로 진행 하시겠습니까?('y'or'n')")
 
             if reset =="y":
 
@@ -158,7 +159,7 @@ class File_format:
                 print("error")
 
         except:
-            print("파일 포맷 기록이 없습니다.")
+            print("\n파일 포맷 기록이 없습니다.")
             self.make_json()
 
 

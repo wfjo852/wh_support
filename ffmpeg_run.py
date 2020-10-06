@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import os, sys
-from wh2_script import wh_ffmpeg
+from wh2_script import wh_ffmpeg, global_setting
+
 
 # Setting
-movie_ext =['.mp4','.mov']
+
+movie_ext =global_setting.import_ext
 export_ext ='.mp4'
-subprocess_path = "./exec"
-font_path = "./exec"
+subprocess_path = global_setting.ffmpeg_path
+font_path = global_setting.font_path
 
 
 class FFMPEG_RUN:

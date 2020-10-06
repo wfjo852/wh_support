@@ -7,6 +7,7 @@ import json
 
 from .lib import wh_setting
 
+api_version = "1.0.2"
 
 
 
@@ -51,8 +52,10 @@ class Login:
             Login.whtoken = {"whtoken": whtoken}
             # print(whtoken)
             print(user_id,': login success')
+            print("wh2api_ver : ",api_version)
         else:
             print(user_id,": wh_token_apply")
+            print("wh2api_ver : ", api_version)
             Login.url = wh_url
             Login.id = user_id
             Login.pw = user_pw

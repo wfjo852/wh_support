@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+
+
 import os,sys
 from datetime import datetime
 
@@ -7,16 +9,17 @@ from wh2_script import wh_file_manage,wh_excle
 import wh_run,ffmpeg_run
 
 
+
 #Path Setting
-#path = sys.argv[2]
-path = r"H:\Park_doc\wormhole\Test_shot_BigBuck\export\test"
+path = sys.argv[2]
+# path = r"H:\Park_doc\wormhole\Test_shot_BigBuck\export\test"
 # path = "/Users/jonghopark/Desktop/Wormhole2/BIgbuck_bunny/Anim_Data_burnin"
 
 
 #파일의 포맷을 기록 하는 기능
 file_format_class = wh_file_manage.File_format("_",os.listdir(path)[0])
 file_format = file_format_class.run()
-print(file_format)
+
 
 #업로드할 프로젝트 에피소드 선택
 project_idx, project_name= wh_run.project_select()
@@ -36,25 +39,23 @@ ffmpeg = ffmpeg_run.FFMPEG_RUN(path)
 #Path내 파일 체크.
 file_list = Wh_file.file_dict(path)
 
-print(file_list)
 
 #new File_list 체크
-print('새롭게 추가할 데이터를 추출 중 입니다.')
+print('\nn새롭게 추가할 데이터를 추출 중 입니다.')
 new_file_list = wh_run.compared_list(project_idx=project_idx,episode_idx=episode_idx,file_list=file_list)
 
 print("추출 완료")
 
 
-print('파일의 메타데이터를 추출 중 입니다.')
+print('\n\n파일의 메타데이터를 추출 중 입니다.')
 for file in new_file_list:
     file_name = file['file']
     length = ffmpeg.media_length(file_name)
     file.update(length)
 print("메타데이터 추출 완료")
-print(new_file_list)
 
 ###
-print("썸네일 추출중 입니다")
+print("\n\n썸네일 추출중 입니다")
 for file in new_file_list:
     thumbnail_file_name = {"thumbnail":os.path.splitext(file['file'])[0]+'.jpg'}
     file.update(thumbnail_file_name)
@@ -65,7 +66,7 @@ for file in new_file_list:
     file_full_path_list.append(("/").join(file_full_path))
 
 thumbnail_output_folder = ffmpeg.make_thumbnail(file_full_path_list)
-print("썸네일 추출완료")
+print("썸네일 추출완료\n\n")
 
 
 
@@ -96,7 +97,7 @@ for file in new_file_list:
 bulk_run = ""
 
 while bulk_run != "y" and bulk_run !='n':
-    bulk_run = input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'" % (len(new_file_list)))
+    bulk_run = input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'\n" % (len(new_file_list)))
 
 
 #벌크 업로드 실행
@@ -121,7 +122,7 @@ elif bulk_run == 'n':
 excle_write =""
 
 while excle_write != "y" and excle_write != "n":
-    excle_write = input("Bulk Create한 샷 목록을 엑셀로 출력 하시겠습니까? \n 'y' or 'n'")
+    excle_write = input("Bulk Create한 샷 목록을 엑셀로 출력 하시겠습니까? \n 'y' or 'n'\n")
 
 #엑셀로 출력
 if excle_write =='y':
@@ -138,7 +139,7 @@ if excle_write =='y':
                              path+"/"+file['thumbnail']])
 
     workbook.save_file(path + "_Created_list.xlsx")
-    print('엑셀 파일로 저장 되었습니다. \n',path+"_Created_list.xlsx")
+    print('\n\n엑셀 파일로 저장 되었습니다. \n',path+"_Created_list.xlsx")
 else:
     print("사용자에 의해 프로세스가 중지 되었습니다.")
     sys.exit(1)

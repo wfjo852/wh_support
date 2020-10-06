@@ -3,12 +3,9 @@
 import getpass
 import json
 import os
-
+from wh2_script import global_setting
 from wh2api_internal import wh
 import wh2api_internal as wh2api
-
-
-
 
 def wh_login():
     wh_url = input("wormhole url : ")
@@ -21,7 +18,7 @@ def wh_login():
 
     wh_login = wh.Login(wh_url = wh_url, user_id=user_id, user_pw=user_pw)
     wh_token = wh_login.whtoken['whtoken']
-    login_json_write = open("./setting/login.json", 'w', encoding="utf-8")
+    login_json_write = open(global_setting.login_path + "/login.json", 'w', encoding="utf-8")
     login_json_file = {"wh_url": wh_url, "user_id": user_id, "wh_token": wh_token}
     json.dump(login_json_file,login_json_write)
     login_json_write.close()
@@ -32,13 +29,13 @@ def wh_login():
 def project_select():
 
     project_list = wh2api.project.list()['projects']
-    print("index \t project_name")
+    print("\n\nindex : project_name")
 
     project_dict = {}
     for project in project_list:
         project_dict_update = {project['project_idx']: project['name']}
         project_dict.update(project_dict_update)
-        print(project['project_idx']+"\t"+project['name'])
+        print(project['project_idx']+" : "+project['name'])
 
 
     project_sel_idx = input("프로젝트를 선택 하세요.")
@@ -53,13 +50,13 @@ def project_select():
 
 def episode_select(project_idx):
     episode_list = wh2api.episode.list(project_idx= project_idx)['episodes']
-    print("index \t episode_name")
+    print("\n\nindex : episode_name")
 
     episode_dict ={}
     for episode in episode_list:
         episode_dict_update = {episode['episode_idx'] : episode['name']}
         episode_dict.update(episode_dict_update)
-        print(episode['episode_idx']+"\t"+ episode['name'])
+        print(episode['episode_idx']+" : "+ episode['name'])
 
     episode_sel_idx = input("에피소드를 선택 하세요.")
     episode_sel_name = episode_dict[episode_sel_idx]
@@ -104,7 +101,7 @@ def compared_list(project_idx,episode_idx,file_list):
 
 #login Info파일 유무 및 유효성 검사
 try:
-    login_json_read = open("./setting/login.json", 'r', encoding="utf-8")
+    login_json_read = open(global_setting.login_path + "/login.json", 'r', encoding="utf-8")
     login_info = json.load(login_json_read)
 
     if login_info['wh_token'] != "" and login_info['wh_url'] != "" and login_info['user_id'] != "":
