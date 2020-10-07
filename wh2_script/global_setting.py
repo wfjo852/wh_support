@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #각종 경로 처리
-install_path = r"H:\Park_doc\python\wh_support"
+install_path = r"H:\Park_doc\python\wh_support\dist\main"
 ffmpeg_path = install_path + "/exec"
 font_path = install_path + "/exec"
 login_path = install_path + "/setting"

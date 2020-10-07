@@ -3,17 +3,8 @@ import os,sys
 
 
 import ffmpeg_run
-from wh2_script import wh_file_manage, global_setting
+from wh2_script import global_setting
 
-
-#Path Setting
-path = sys.argv[2]
-# path = r"H:\Park_doc\wormhole\Test_shot_BigBuck\export\test"
-# path = "/Users/jonghopark/Desktop/Wormhole2/BIgbuck_bunny/Anim_Data_burnin"
-
-
-#FFmpeg 세팅
-ffmpeg = ffmpeg_run.FFMPEG_RUN(path)
 
 
 #파일 리스트 조회
@@ -28,25 +19,29 @@ def file_dict(file_path):
 
 
 
-#Path내 파일 체크.
-file_list = file_dict(path)
+def make_thumbnail(path):
+    #FFmpeg 세팅
+    ffmpeg = ffmpeg_run.FFMPEG_RUN(path)
+
+    #Path내 파일 체크.
+    file_list = file_dict(path)
 
 
-#파일에 풀패스 리스트로 전환
-file_full_path_list = []
-for file in file_list:
-    file_full_path = [path,file]
-    file_full_path_list.append(("/").join(file_full_path))
+    #파일에 풀패스 리스트로 전환
+    file_full_path_list = []
+    for file in file_list:
+        file_full_path = [path,file]
+        file_full_path_list.append(("/").join(file_full_path))
 
-thumbnail_run = ""
+    thumbnail_run = ""
 
-while thumbnail_run != "y" and thumbnail_run != 'n':
-    thumbnail_run = input("\n%s개의 영상 파일의 썸네일을 출력 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'\n" % (len(file_list)))
+    while thumbnail_run != "y" and thumbnail_run != 'n':
+        thumbnail_run = input("\n%s개의 영상 파일의 썸네일을 출력 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'\n" % (len(file_list)))
 
-if thumbnail_run =="y":
-    thumbnail_output_folder = ffmpeg.make_thumbnail(file_full_path_list)
-    print("썸네일 추출완료")
+    if thumbnail_run =="y":
+        thumbnail_output_folder = ffmpeg.make_thumbnail(file_full_path_list)
+        print("썸네일 추출완료")
 
-elif thumbnail_run == "n":
-    print("사용자에 의해 프로세스가 중지 되었습니다.")
-    sys.exit(1)
+    elif thumbnail_run == "n":
+        print("사용자에 의해 프로세스가 중지 되었습니다.")
+        sys.exit(1)
