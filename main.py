@@ -6,7 +6,8 @@ import sys
 #Path Setting
 path = sys.argv[2]
 action = sys.argv[3]
-print(path,action)
+print(path,action," Progress running \n")
+
 
 
 if action == 'bulk_shot_create':

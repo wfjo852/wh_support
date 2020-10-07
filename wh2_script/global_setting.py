@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
 
 #각종 경로 처리
-install_path = r"H:\Park_doc\python\wh_support\dist\main"
+install_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+print(install_path)
 ffmpeg_path = install_path + "/exec"
 font_path = install_path + "/exec"
 login_path = install_path + "/setting"

@@ -5,7 +5,7 @@
 import os,sys, time
 from datetime import datetime
 
-from wh2_script import wh_file_manage,wh_excle
+from wh2_script import wh_file_manage, wh_excle, wh_progress
 import wh_run,ffmpeg_run
 
 
@@ -43,11 +43,12 @@ def bulk_shot_create(path):
     print("추출 완료")
 
 
-    print('\n\n파일의 메타데이터를 추출 중 입니다.')
-    for file in new_file_list:
+    print('\n\n%s개 파일의 메타데이터를 추출 중 입니다.'%(len(new_file_list)))
+    for file,i in zip(new_file_list,range(0,len(new_file_list))):
         file_name = file['file']
         length = ffmpeg.media_length(file_name)
         file.update(length)
+        wh_progress.printProgress(i,len(new_file_list))
     print("메타데이터 추출 완료")
 
     ###
