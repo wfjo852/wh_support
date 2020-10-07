@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['H:\\Park_doc\\python\\wh_support\\main.py', 'H:\\Park_doc\\python\\wh_support\\wh_thumbnail_make.py'],
+a = Analysis(['H:\\Park_doc\\python\\wh_support\\main.py'],
              pathex=['H:\\Park_doc\\python\\wh_support'],
              binaries=[],
              datas=[('./exec', './exec'), ('./setting', './setting')],

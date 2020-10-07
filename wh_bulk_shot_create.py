@@ -5,7 +5,7 @@
 import os,sys, time
 from datetime import datetime
 
-from wh2_script import wh_file_manage, wh_excle, wh_progress
+from wh2_script import wh_file_manage, wh_excle, wh_progress,global_setting
 import wh_run,ffmpeg_run
 
 
@@ -13,7 +13,7 @@ import wh_run,ffmpeg_run
 def bulk_shot_create(path):
 
     #파일의 포맷을 기록 하는 기능
-    file_format_class = wh_file_manage.File_format("_",os.listdir(path)[0])
+    file_format_class = wh_file_manage.File_format(global_setting.split_text,os.listdir(path)[0])
     file_format = file_format_class.run()
 
 
@@ -22,7 +22,7 @@ def bulk_shot_create(path):
     episode_idx, episode_name = wh_run.episode_select(project_idx=project_idx)
 
     #파일 포맷 및 기본 정보 입력
-    Wh_file = wh_file_manage.File(split_text = "_",
+    Wh_file = wh_file_manage.File(split_text = global_setting.split_text,
                                   project= project_name,
                                   episode= episode_name,
                                   sequence= file_format['sequence'],

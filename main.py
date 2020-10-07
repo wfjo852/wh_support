@@ -6,8 +6,11 @@ import sys
 #Path Setting
 path = sys.argv[2]
 action = sys.argv[3]
-print(path,action," Progress running \n")
 
+# path = r"H:\Park_doc\wormhole\Test_shot_BigBuck\export\Anim_Data_burnin"
+# action = "bulk_shot_create"
+
+print(path,action," Progress running \n")
 
 
 if action == 'bulk_shot_create':
