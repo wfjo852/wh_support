@@ -4,7 +4,7 @@ import getpass
 import json
 from prettytable import PrettyTable
 
-from wh2_script import global_setting
+from wh2_script import global_setting, message
 from wh2api_internal import wh
 import wh2api_internal as wh2api
 
@@ -41,10 +41,13 @@ def project_select():
 
     #테이블 출력
     print(table)
-    project_sel_idx = global_setting.q_input("project index를 선택 하세요.",project_dict.keys(),False)
+
+    #프로젝트 선택 질문
+    project_sel_idx = global_setting.q_input(message.wh_project_select,project_dict.keys(),False)
     project_sel_name = project_dict[project_sel_idx]
 
-    print('선택한 프로젝트의 이름은 %s 입니다.'%(project_sel_name))
+    #프로젝트 이름 출력
+    print(message.wh_project_select(project_sel_name))
     return project_sel_idx, project_sel_name
 
 
@@ -60,10 +63,13 @@ def episode_select(project_idx):
 
     #테이블 출력
     print(table)
-    episode_sel_idx = global_setting.q_input("Episode index를 선택 하세요.",episode_dict.keys(),False)
+
+    #에피소드 선택 질문
+    episode_sel_idx = global_setting.q_input(message.wh_episode_select,episode_dict.keys(),False)
     episode_sel_name = episode_dict[episode_sel_idx]
 
-    print('선택한 에피소드의 이름은 %s 입니다.'%(episode_sel_name))
+    #에피소드 이름 출력
+    print(message.wh_episode_select_result%(episode_sel_name))
     return episode_sel_idx,episode_sel_name
 
 def shot_bulk_list(project_idx,episode_idx):
@@ -90,7 +96,8 @@ def compared_list(project_idx,episode_idx,file_list):
                 new_file_list.append(file)
 
     else:
-        print("file_list의 정보가 정확하지 않습니다.")
+        #웜홀에서 API 조회폼이 바뀌면 생기는 에러 처리
+        print(message.wh_compared_list_error)
         return 'error'
 
 
@@ -106,6 +113,8 @@ try:
     login_info = json.load(login_json_read)
 
     if login_info['wh_token'] != "" and login_info['wh_url'] != "" and login_info['user_id'] != "":
+
+        #json파일안에 데이터가 온전해서 WhToken login으로 진행
         wh_url = login_info['wh_url']
         user_id = login_info['user_id']
         wh_token = login_info['wh_token']
@@ -113,11 +122,13 @@ try:
         wh.Login(wh_url=wh_url, user_id=user_id, wh_token=wh_token)
 
     else:
-        print("정보가 비어 있습니다. 다시 로그인 합니다. ")
+        #Json 파일안에 데이터가 온전하지 않는 경우
+        print(message.wh_login_file_data_none)
         wh_login()
 
 except:
-    print("Login 기록이 없습니다. 로그인을 진행 합니다.")
+    #login.json파일이 지워졌거나 없는 경우 에러 처리
+    print(message.wh_login_file_none)
     wh_login()
 
 

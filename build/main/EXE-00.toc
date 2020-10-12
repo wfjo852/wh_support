@@ -31,6 +31,9 @@
   ('pyi_rth_multiprocessing',
    'H:\\Park_doc\\python\\wh_support\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
    'PYSOURCE'),
+  ('pyi_rth_pkgres',
+   'H:\\Park_doc\\python\\wh_support\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgres.py',
+   'PYSOURCE'),
   ('main', 'H:\\Park_doc\\python\\wh_support\\main.py', 'PYSOURCE'),
   ('main.exe.manifest',
    'H:\\Park_doc\\python\\wh_support\\build\\main\\main.exe.manifest',
@@ -38,7 +41,7 @@
  [],
  False,
  False,
- 1602149159,
+ 1602492353,
  [('run.exe',
    'h:\\park_doc\\python\\wh_support\\venv\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\run.exe',
    'EXECUTABLE')])

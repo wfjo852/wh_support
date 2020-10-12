@@ -4,7 +4,7 @@ from prettytable import PrettyTable
 
 
 import ffmpeg_run
-from wh2_script import global_setting
+from wh2_script import global_setting, message
 
 
 
@@ -41,12 +41,12 @@ def make_thumbnail(path):
 
     #여부 확인
     print(table)
-    thumbnail_run = global_setting.q_input("\n%s개의 영상 파일의 썸네일을 출력 하려고 합니다. 진행 하시겠습니까?" % (len(file_list)),['y','n'])
+    thumbnail_run = global_setting.q_input(message.thumbnail_create_question %(len(file_list)),['y','n'])
 
     if thumbnail_run =="y":
         thumbnail_output_folder = ffmpeg.make_thumbnail(file_full_path_list)
-        print("썸네일 추출완료")
+        print(message.thumbnail_create_done)
 
     elif thumbnail_run == "n":
-        print("사용자에 의해 프로세스가 중지 되었습니다.")
+        print(message.process_stop)
         sys.exit(1)

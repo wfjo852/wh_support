@@ -4,7 +4,7 @@ import os,sys, time
 from datetime import datetime
 from prettytable import PrettyTable
 
-from wh2_script import wh_file_manage, wh_excle, wh_progress,global_setting
+from wh2_script import wh_file_manage, wh_excle, wh_progress,global_setting, message
 import wh_run,ffmpeg_run
 
 
@@ -37,14 +37,15 @@ def bulk_shot_create(path):
     file_list = Wh_file.file_dict(path)
 
 
-    #new File_list 체크
-    print('\nn새롭게 추가할 데이터를 추출 중 입니다.')
+    #기존 데이터와 비교
+    print(message.bulk_new_file)
     new_file_list = wh_run.compared_list(project_idx=project_idx,episode_idx=episode_idx,file_list=file_list)
+    print(message.bulk_new_file_done)
+    #추가할 데이터 정리 완료(new_file_list)
 
-    print("추출 완료")
 
-
-    print('\n\n%s개 파일의 메타데이터를 추출 중 입니다.'%(len(new_file_list)))
+    #메타데이터 추출 시작
+    print(message.bulk_meta_file(len(new_file_list)))
     for file,i in zip(new_file_list,range(0,len(new_file_list))):
         file_name = file['file']
         length = ffmpeg.media_length(file_name)
@@ -53,10 +54,12 @@ def bulk_shot_create(path):
 
         #테이블 세팅
         table.add_row([project_name,episode_name,file['sequence'],file["shot"],length['length'],file_name])
-    print("메타데이터 추출 완료")
+    print(message.bulk_meta_file_done)
+    #메타데이터 추출 완료
 
-    ###
-    print("\n\n썸네일 추출중 입니다")
+
+    #썸네일 추출 시작
+    print(message.bulk_thumbnail_create)
     for file in new_file_list:
         thumbnail_file_name = {"thumbnail":os.path.splitext(file['file'])[0]+'.jpg'}
         file.update(thumbnail_file_name)
@@ -67,7 +70,8 @@ def bulk_shot_create(path):
         file_full_path_list.append(("/").join(file_full_path))
 
     thumbnail_output_folder = ffmpeg.make_thumbnail(file_full_path_list)
-    print("썸네일 추출완료\n\n")
+    print(message.bulk_thumbnail_create_done)
+    #썸네일 추출 완료
 
 
 
@@ -96,7 +100,7 @@ def bulk_shot_create(path):
 
     #벌크 업로드 여부 확인
     print(table)
-    bulk_run= global_setting.q_input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까?" % (len(new_file_list)),['y','n'])
+    bulk_run= global_setting.q_input(message.bulk_create_question % (len(new_file_list)), ['y', 'n'])
 
 
     #벌크 업로드 실행
@@ -111,7 +115,7 @@ def bulk_shot_create(path):
                                        length=length,
                                        original_edit_path=original_edit_path)
     elif bulk_run == 'n':
-        print("사용자에 의해 프로세스가 중지 되었습니다.")
+        print(message.process_stop)
         sys.exit(1)
 
 
@@ -119,7 +123,7 @@ def bulk_shot_create(path):
 
     #엑셀 출력 여부 확인
 
-    excle_write = global_setting.q_input("Bulk Create한 샷 목록을 엑셀로 출력 하시겠습니까?",['y','n'])
+    excle_write = global_setting.q_input(message.bulk_created_list_export_question,['y','n'])
 
     #엑셀로 출력
     if excle_write =='y':
@@ -136,7 +140,7 @@ def bulk_shot_create(path):
                                  path+"/"+file['thumbnail']])
 
         workbook.save_file(path + "_Created_list.xlsx")
-        print('\n\n엑셀 파일로 저장 되었습니다. \n',path+"_Created_list.xlsx")
+        print(message.bulk_created_list_export_done,path+"_Created_list.xlsx")
     else:
-        print("사용자에 의해 프로세스가 중지 되었습니다.")
+        print(message.process_stop)
         sys.exit(1)

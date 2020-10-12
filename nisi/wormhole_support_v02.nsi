@@ -90,6 +90,7 @@ Section "MainSection" SEC01
   File "..\dist\main\api-ms-win-crt-time-l1-1-0.dll"
   File "..\dist\main\api-ms-win-crt-utility-l1-1-0.dll"
   File "..\dist\main\base_library.zip"
+  File "..\dist\main\prettytable.py"
   SetOutPath "$INSTDIR\exec"
   File "..\dist\main\exec\ffmpeg.exe"
   File "..\dist\main\exec\ffplay.exe"
@@ -1101,6 +1102,9 @@ Section "MainSection" SEC01
   
   SetOutPath "$INSTDIR\icon"
   File "..\dist\main\icon\Wormhole_LOGO.ico"
+  SetOutPath "$INSTDIR\prettytable-1.0.1.dist-info"
+  File "..\dist\main\prettytable-1.0.1.dist-info\*"
+  
 SectionEnd
 
 Section -AdditionalIcons
