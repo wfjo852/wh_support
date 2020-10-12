@@ -26,7 +26,6 @@ def wh_login():
 
     return wh_token
 
-
 def project_select():
 
     project_list = wh2api.project.list()['projects']

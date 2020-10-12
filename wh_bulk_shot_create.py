@@ -10,6 +10,7 @@ import wh_run,ffmpeg_run
 
 
 def bulk_shot_create(path):
+    time.sleep(2)
     #table 세팅
     table=PrettyTable(['Project',"Episode",'Sequence','Shot','Length','File'])
     #파일의 포맷을 기록 하는 기능
@@ -34,7 +35,6 @@ def bulk_shot_create(path):
 
     #Path내 파일 체크.
     file_list = Wh_file.file_dict(path)
-    file_list
 
 
     #new File_list 체크
