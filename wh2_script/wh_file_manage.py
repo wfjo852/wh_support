@@ -147,7 +147,7 @@ class File_format:
             #리셋 여부 확인
             reset = ""
             while reset != 'y' and reset != 'n':
-                reset = input("해당 네이밍 규칙으로 진행 하시겠습니까?('y'or'n')")
+                reset = global_setting.q_input("해당 네이밍 규칙으로 진행 하시겠습니까?",['y','n'])
 
             if reset =="y":
 

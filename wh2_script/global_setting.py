@@ -21,3 +21,26 @@ file_type_load = json.load(file_type_read)
 
 import_ext =file_type_load['import_ext']
 split_text = file_type_load['split_text']
+
+
+def q_input(q_text,answer_list=[],show=True):
+    answer_text = ("/").join(answer_list)
+    answer = ""
+
+
+    def Questions():
+        if show == True:
+            answer = input(q_text+"(%s) : "%(answer_text))
+            return(answer)
+        elif show == False:
+            answer = input(q_text+" : ")
+            return (answer)
+
+    # 첫번째 질문
+    answer=Questions()
+
+    while answer not in answer_list:
+        print("선택가능한 값이 아닙니다.")
+        answer = Questions()
+
+    return answer

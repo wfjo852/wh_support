@@ -1,5 +1,6 @@
 #-*- coding:utf-8 -*-
 import os,sys
+from prettytable import PrettyTable
 
 
 import ffmpeg_run
@@ -26,17 +27,21 @@ def make_thumbnail(path):
     #Path내 파일 체크.
     file_list = file_dict(path)
 
+    #Table세팅
+    table = PrettyTable(['File'])
+
 
     #파일에 풀패스 리스트로 전환
     file_full_path_list = []
     for file in file_list:
+        table.add_row([file])
         file_full_path = [path,file]
         file_full_path_list.append(("/").join(file_full_path))
 
-    thumbnail_run = ""
 
-    while thumbnail_run != "y" and thumbnail_run != 'n':
-        thumbnail_run = input("\n%s개의 영상 파일의 썸네일을 출력 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'\n" % (len(file_list)))
+    #여부 확인
+    print(table)
+    thumbnail_run = global_setting.q_input("\n%s개의 영상 파일의 썸네일을 출력 하려고 합니다. 진행 하시겠습니까?" % (len(file_list)),['y','n'])
 
     if thumbnail_run =="y":
         thumbnail_output_folder = ffmpeg.make_thumbnail(file_full_path_list)

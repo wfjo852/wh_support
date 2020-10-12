@@ -2,7 +2,8 @@
 
 import getpass
 import json
-import os
+from prettytable import PrettyTable
+
 from wh2_script import global_setting
 from wh2api_internal import wh
 import wh2api_internal as wh2api
@@ -29,40 +30,41 @@ def wh_login():
 def project_select():
 
     project_list = wh2api.project.list()['projects']
-    print("\n\nindex : project_name")
+
+    #테이블 세팅
+    table = PrettyTable(['index','project_name'])
 
     project_dict = {}
     for project in project_list:
-        project_dict_update = {project['project_idx']: project['name']}
+        project_dict_update = {project['idx']: project['name']}
         project_dict.update(project_dict_update)
-        print(project['project_idx']+" : "+project['name'])
+        table.add_row([project['idx'],project['name']])
 
+    #테이블 출력
+    print(table)
+    project_sel_idx = global_setting.q_input("project index를 선택 하세요.",project_dict.keys(),False)
+    project_sel_name = project_dict[project_sel_idx]
 
-    project_sel_idx = input("프로젝트를 선택 하세요.")
-    if project_sel_idx in project_dict.keys():
-        project_sel_name = project_dict[project_sel_idx]
-
-        print('선택한 프로젝트의 이름은 %s 입니다.'%(project_sel_name))
-        return project_sel_idx, project_sel_name
-    else:
-        pass
+    print('선택한 프로젝트의 이름은 %s 입니다.'%(project_sel_name))
+    return project_sel_idx, project_sel_name
 
 
 def episode_select(project_idx):
     episode_list = wh2api.episode.list(project_idx= project_idx)['episodes']
-    print("\n\nindex : episode_name")
+    table = PrettyTable(['index','Episode_name'])
 
     episode_dict ={}
     for episode in episode_list:
-        episode_dict_update = {episode['episode_idx'] : episode['name']}
+        episode_dict_update = {episode['idx'] : episode['name']}
         episode_dict.update(episode_dict_update)
-        print(episode['episode_idx']+" : "+ episode['name'])
+        table.add_row([episode['idx'],episode['name']])
 
-    episode_sel_idx = input("에피소드를 선택 하세요.")
+    #테이블 출력
+    print(table)
+    episode_sel_idx = global_setting.q_input("Episode index를 선택 하세요.",episode_dict.keys(),False)
     episode_sel_name = episode_dict[episode_sel_idx]
 
     print('선택한 에피소드의 이름은 %s 입니다.'%(episode_sel_name))
-
     return episode_sel_idx,episode_sel_name
 
 def shot_bulk_list(project_idx,episode_idx):

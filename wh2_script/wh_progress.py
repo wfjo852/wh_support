@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 
 import sys
+import time
 def printProgress (iteration, total, prefix = 'progress', suffix = 'Done', decimals = 1, barLength = 50):
     formatStr = "{0:." + str(decimals) + "f}"
     percent = formatStr.format(100 * (iteration / float(total)))

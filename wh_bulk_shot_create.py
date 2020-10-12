@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
-
 import os,sys, time
 from datetime import datetime
+from prettytable import PrettyTable
 
 from wh2_script import wh_file_manage, wh_excle, wh_progress,global_setting
 import wh_run,ffmpeg_run
@@ -11,7 +10,8 @@ import wh_run,ffmpeg_run
 
 
 def bulk_shot_create(path):
-
+    #table 세팅
+    table=PrettyTable(['Project',"Episode",'Sequence','Shot','Length','File'])
     #파일의 포맷을 기록 하는 기능
     file_format_class = wh_file_manage.File_format(global_setting.split_text,os.listdir(path)[0])
     file_format = file_format_class.run()
@@ -34,6 +34,7 @@ def bulk_shot_create(path):
 
     #Path내 파일 체크.
     file_list = Wh_file.file_dict(path)
+    file_list
 
 
     #new File_list 체크
@@ -49,6 +50,9 @@ def bulk_shot_create(path):
         length = ffmpeg.media_length(file_name)
         file.update(length)
         wh_progress.printProgress(i,len(new_file_list))
+
+        #테이블 세팅
+        table.add_row([project_name,episode_name,file['sequence'],file["shot"],length['length'],file_name])
     print("메타데이터 추출 완료")
 
     ###
@@ -91,10 +95,8 @@ def bulk_shot_create(path):
 
 
     #벌크 업로드 여부 확인
-    bulk_run = ""
-
-    while bulk_run != "y" and bulk_run !='n':
-        bulk_run = input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까? \n 'y' or 'n'\n" % (len(new_file_list)))
+    print(table)
+    bulk_run= global_setting.q_input("%s개의 데이터를 등록 하려고 합니다. 진행 하시겠습니까?" % (len(new_file_list)),['y','n'])
 
 
     #벌크 업로드 실행
@@ -116,10 +118,8 @@ def bulk_shot_create(path):
 
 
     #엑셀 출력 여부 확인
-    excle_write =""
 
-    while excle_write != "y" and excle_write != "n":
-        excle_write = input("Bulk Create한 샷 목록을 엑셀로 출력 하시겠습니까? \n 'y' or 'n'\n")
+    excle_write = global_setting.q_input("Bulk Create한 샷 목록을 엑셀로 출력 하시겠습니까?",['y','n'])
 
     #엑셀로 출력
     if excle_write =='y':
