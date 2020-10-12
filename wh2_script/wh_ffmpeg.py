@@ -2,6 +2,8 @@
 
 import subprocess, os, json, shutil
 
+from wh2_script import wh_progress
+
 
 class Wh_ffmpeg:
 
@@ -15,7 +17,7 @@ class Wh_ffmpeg:
         self.ffmpeg_path = r"%s/ffmpeg"%(ffmpeg_location)
         self.ffprobe_path = r"%s/ffprobe"%(ffmpeg_location)
         self.font_location = font_location
-
+        self.fnull = open(os.devnull,"w")
 
     def ffprobe_file(self, file_name):
         input_file = '%s/%s' %(self.file_path,file_name)
@@ -167,7 +169,7 @@ class Wh_ffmpeg:
     def make_thumbnail(self,file_path_list=[],image_size="1280*720",frame='1',overwrite="y"):
 
 
-        for file_path in file_path_list:
+        for file_path,i in zip(file_path_list,range(0,len(file_path_list))):
             export_file_name = os.path.splitext(os.path.basename(file_path))[0]+'.jpg'
             make_thumbnail_cmd = [self.ffmpeg_path,
                                   '-i', file_path,
@@ -188,7 +190,9 @@ class Wh_ffmpeg:
             else:
                 os.mkdir(self.thumbnail_folder)
 
-            subprocess.call(make_thumbnail_cmd)
-            print(export_file_name,' 출력 완료')
+            subprocess.call(make_thumbnail_cmd,stdout= self.fnull, stderr=subprocess.STDOUT)
+
+            #progress바 출력
+            wh_progress.printProgress(i,len(file_path_list))
 
         return self.thumbnail_folder
