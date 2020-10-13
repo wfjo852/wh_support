@@ -1,14 +1,21 @@
-#main.py
-레지스트리에서 Path 랑 키를 보내주고 그걸 선택해서 Python 을 실행 시킴
+#빌드 방법
 
-#wh_bulk_shot_create.py
-해당 Path에서 데이터 Listing
+##빌드
+``` 
+pyinstall.bat을 실행
 
-메타데이터 추출
+절대경로를 꼭 맞춰야 하는 것들
+ - pyinstaller 설치경로
+ - icon
+ - 빌드해야 하는 main.py 
 
-썸네일 추출
+```
 
-업로드
+##컴파일 
+```
+nisi editor로 작업됨
 
-엑셀로 저장 순으로 진행
+ >> nisi/wormhole_support_v02.nsi
 
+nisi 스크립트로 돌리면 EXE 파일로 컴파일 됨
+```
