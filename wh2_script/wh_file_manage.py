@@ -2,7 +2,7 @@
 
 import os
 import json
-from wh2_script import global_setting
+from wh2_script import global_setting, message
 
 
 class File:
@@ -96,14 +96,18 @@ class File_format:
         self.file_split = self.file_name.split(split_text)  # split 기호로 나누기
         self.file_format_info=""
 
+    #json파일을 만드는 함수
     def make_json(self):
-        print("\n",self.sample_file_name,"를",f"'{self.split_text}'","로 구분했습니다.")
+        #샘플용 파일네임을 보여줌.
+        print(message.file_example %(self.sample_file_name,self.split_text))
         idx = 0
         for text in self.file_split:
             print(idx,":",text)
             idx = idx +1
-        sequence = input(f"\n이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
-        shot = input(f"\n이중 샷에 해당하는 것을 순서대로 선택 하세요\n ex) {self.split_text}를 이용해 작성하세요 1 or 2{self.split_text}3\n")
+        sequence = input(message.file_sequence_input + message.file_sequence_ex % (self.split_text, self.split_text))
+        shot = input(message.file_shot_input + message.file_shot_ex % (self.split_text, self.split_text))
+
+        #file_format json파일 생성
         file_format_write = open(global_setting.file_format_path + "/file_format.json", "w", encoding="utf-8")
 
         file_format_info = {"sequence":sequence.split(self.split_text),"shot":shot.split(self.split_text)}
@@ -111,6 +115,7 @@ class File_format:
         file_format_write.close()
         return self.run()
 
+    #split name으로 묶는 함수
     def join_name(self,join_idx):
 
         result = []
@@ -128,29 +133,32 @@ class File_format:
         else:
             return (self.split_text).join(result)
 
+
+    #최초 실행
     def run(self):
+        #파일 유무 확인
         try:
             file_format_read = open(global_setting.file_format_path + "/file_format.json", "r", encoding="utf-8")
             file_format_info = json.load(file_format_read)
 
-
+            #파일 포맷 규칙에 따라 결과값 추출
             if file_format_info["sequence"] !="" and file_format_info["shot"] !="":
                 sequence = self.join_name(file_format_info['sequence'])
                 shot = self.join_name(file_format_info['shot'])
                 print("\n",self.sample_file_name,"\nsequence name : ",sequence,"\nshot name :",shot)
 
+            #파일 포맷json파일 안에 데이터가 부족한 경우
             else:
-                print("\n정보가 비어있습니다. 다시 시작해 주세요.")
+                print(message.file_info_blank)
                 self.make_json()
 
 
-            #리셋 여부 확인
+            #파일 포맷 json파일의 리셋 여부 확인
             reset = ""
             while reset != 'y' and reset != 'n':
-                reset = global_setting.q_input("해당 네이밍 규칙으로 진행 하시겠습니까?",['y','n'])
+                reset = global_setting.q_input(message.file_continue,['y','n'])
 
             if reset =="y":
-
                 return file_format_info
 
             elif reset == "n":
@@ -158,8 +166,9 @@ class File_format:
             else:
                 print("error")
 
+        #파일 없음 json 파일 만듬
         except:
-            print("\n파일 포맷 기록이 없습니다.")
+            print(message.file_none)
             self.make_json()
 
 

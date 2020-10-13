@@ -34,3 +34,16 @@ wh_login_file_none = "Login 기록이 없습니다. 로그인을 진행 합니�
 process_stop = "사용자에의해 프로세스가 중지 되었습니다."
 process_done = "프로세스가 완료 되었습니다."
 process_select_error ="선택가능한 값이 아닙니다."
+
+#file
+
+file_example = "%s를 %s로 구분했습니다."#%(self.sample_file_name,self.split_text)
+
+file_sequence_input = "\n이중 시퀀스에 해당하는 것을 순서대로 선택하세요 \n"
+file_sequence_ex = "ex) %s를 이용해 작성하세요 1 or 2%s3" #%(self.split_text,self.split_text)
+file_shot_input = "\n이중 샷에 해당하는 것을 순서대로 선택 하세요\n"
+file_shot_ex = file_sequence_ex
+
+file_info_blank = "\n정보가 비어있습니다. 다시 시작해 주세요."
+file_continue = "해당 네이밍 규칙으로 진행 하시겠습니까?"
+file_none = "\n파일 포맷 기록이 없습니다."
